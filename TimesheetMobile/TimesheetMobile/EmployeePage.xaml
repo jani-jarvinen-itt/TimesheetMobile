@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TimesheetMobile.EmployeePage">
   <StackLayout>
-    <Button Text="Load Employees"></Button>
+    <Button Text="Load Employees" Clicked="LoadEmployees"></Button>
     <ListView x:Name="employeeList">
       
     </ListView>
