@@ -16,7 +16,7 @@ namespace TimesheetMobile
         {
             InitializeComponent();
 
-            employeeList.ItemsSource = new string[] { "AAA", "BBB" };
+            employeeList.ItemsSource = new string[] { "" };
         }
 
         public async void LoadEmployees(object sender, EventArgs e)
@@ -37,10 +37,17 @@ namespace TimesheetMobile
             }
         }
 
-        private void ListWorkAssignments(object sender, EventArgs e)
+        private async void ListWorkAssignments(object sender, EventArgs e)
         {
-            string employee = employeeList.SelectedItem.ToString();
-            Navigation.PushAsync(new WorkAssignmentPage());
+            string employee = employeeList.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(employee))
+            {
+                await DisplayAlert("List Work", "You must select employee first.", "OK");
+            }
+            else
+            {
+                Navigation.PushAsync(new WorkAssignmentPage());
+            }
         }
     }
 }

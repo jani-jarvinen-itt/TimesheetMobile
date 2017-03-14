@@ -16,7 +16,7 @@ namespace TimesheetMobile
         {
             InitializeComponent();
 
-            assignmentList.ItemsSource = new string[] { "AAA", "BBB" };
+            assignmentList.ItemsSource = new string[] { "" };
         }
 
         public async void LoadWorkAssignments(object sender, EventArgs e)
@@ -39,8 +39,12 @@ namespace TimesheetMobile
 
         public async void StartWork(object sender, EventArgs e)
         {
-            string assignmentName = assignmentList.SelectedItem.ToString();
-            if (assignmentName != "")
+            string assignmentName = assignmentList.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(assignmentName))
+            {
+                await DisplayAlert("Start Work", "You must select work assignment first.", "OK");
+            }
+            else
             {
                 try
                 {
@@ -53,9 +57,9 @@ namespace TimesheetMobile
                     HttpClient client = new HttpClient();
                     client.BaseAddress = new Uri("http://pointcol-timesheetmobile.azurewebsites.net");
                     string input = JsonConvert.SerializeObject(data);
-                    StringContent content = new StringContent(input,Encoding.UTF8,"application/json");
+                    StringContent content = new StringContent(input, Encoding.UTF8, "application/json");
 
-                    HttpResponseMessage message = await client.PostAsync("/api/workassignment",content);
+                    HttpResponseMessage message = await client.PostAsync("/api/workassignment", content);
                     string reply = await message.Content.ReadAsStringAsync();
                     bool success = JsonConvert.DeserializeObject<bool>(reply);
 
@@ -78,6 +82,45 @@ namespace TimesheetMobile
 
         public async void StopWork(object sender, EventArgs e)
         {
+            string assignmentName = assignmentList.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(assignmentName))
+            {
+                await DisplayAlert("Stop Work", "You must select work assignment first.", "OK");
+            }
+            else
+            {
+                try
+                {
+                    WorkAssignmentOperationModel data = new WorkAssignmentOperationModel()
+                    {
+                        Operation = "Stop",
+                        AssignmentTitle = assignmentName
+                    };
+
+                    HttpClient client = new HttpClient();
+                    client.BaseAddress = new Uri("http://pointcol-timesheetmobile.azurewebsites.net");
+                    string input = JsonConvert.SerializeObject(data);
+                    StringContent content = new StringContent(input, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage message = await client.PostAsync("/api/workassignment", content);
+                    string reply = await message.Content.ReadAsStringAsync();
+                    bool success = JsonConvert.DeserializeObject<bool>(reply);
+
+                    if (success)
+                    {
+                        await DisplayAlert("Stop Work", "Work has been stopped.", "Close");
+                    }
+                    else
+                    {
+                        await DisplayAlert("Stop Work", "Could not stop work.", "Close");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string errorMessage = ex.GetType().Name + ": " + ex.Message;
+                    assignmentList.ItemsSource = new string[] { errorMessage };
+                }
+            }
         }
     }
 }
