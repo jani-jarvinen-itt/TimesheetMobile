@@ -8,6 +8,11 @@
     <ListView x:Name="assignmentList">
 
     </ListView>
+    
+    <StackLayout Orientation="Horizontal">
+      <Button Text="Start Work" Clicked="StartWork"></Button>
+      <Button Text="Stop Work" Clicked="StopWork"></Button>
+    </StackLayout>
   </StackLayout>
 
 </ContentPage>
