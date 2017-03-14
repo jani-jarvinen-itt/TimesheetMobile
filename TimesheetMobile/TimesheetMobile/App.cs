@@ -12,7 +12,7 @@ namespace TimesheetMobile
         public App()
         {
             // The root page of your application
-            MainPage = new EmployeePage();
+            MainPage = new NavigationPage(new EmployeePage());
         }
 
         protected override void OnStart()

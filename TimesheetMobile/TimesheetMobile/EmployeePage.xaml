@@ -7,6 +7,7 @@
     <ListView x:Name="employeeList">
       
     </ListView>
+    <Button Text="List Work Assignments" Clicked="ListWorkAssignments"></Button>
   </StackLayout>
   
 </ContentPage>

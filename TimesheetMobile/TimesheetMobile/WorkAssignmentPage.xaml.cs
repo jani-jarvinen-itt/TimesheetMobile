@@ -10,37 +10,31 @@ using Xamarin.Forms;
 
 namespace TimesheetMobile
 {
-    public partial class EmployeePage : ContentPage
+    public partial class WorkAssignmentPage : ContentPage
     {
-        public EmployeePage()
+        public WorkAssignmentPage()
         {
             InitializeComponent();
 
-            employeeList.ItemsSource = new string[] { "AAA", "BBB" };
+            projectList.ItemsSource = new string[] { "AAA", "BBB" };
         }
 
-        public async void LoadEmployees(object sender, EventArgs e)
+        public async void LoadProjects(object sender, EventArgs e)
         {
             try
             {
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri("http://pointcol-timesheetmobile.azurewebsites.net");
-                string json = await client.GetStringAsync("/api/employee");
+                string json = await client.GetStringAsync("/api/workassignment");
                 string[] employees = JsonConvert.DeserializeObject<string[]>(json);
 
-                employeeList.ItemsSource = employees;
+                projectList.ItemsSource = employees;
             }
             catch (Exception ex)
             {
                 string errorMessage = ex.GetType().Name + ": " + ex.Message;
-                employeeList.ItemsSource = new string[] { errorMessage };
+                projectList.ItemsSource = new string[] { errorMessage };
             }
-        }
-
-        private void ListWorkAssignments(object sender, EventArgs e)
-        {
-            string employee = employeeList.SelectedItem.ToString();
-            Navigation.PushAsync(new WorkAssignmentPage());
         }
     }
 }
