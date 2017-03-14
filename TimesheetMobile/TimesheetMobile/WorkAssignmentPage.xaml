@@ -4,8 +4,8 @@
              x:Class="TimesheetMobile.WorkAssignmentPage">
 
   <StackLayout>
-    <Button Text="Load Projects" Clicked="LoadProjects"></Button>
-    <ListView x:Name="projectList">
+    <Button Text="Load Work Assignments" Clicked="LoadWorkAssignments"></Button>
+    <ListView x:Name="assignmentList">
 
     </ListView>
   </StackLayout>

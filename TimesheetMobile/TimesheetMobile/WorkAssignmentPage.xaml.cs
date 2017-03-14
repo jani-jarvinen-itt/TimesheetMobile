@@ -16,24 +16,24 @@ namespace TimesheetMobile
         {
             InitializeComponent();
 
-            projectList.ItemsSource = new string[] { "AAA", "BBB" };
+            assignmentList.ItemsSource = new string[] { "AAA", "BBB" };
         }
 
-        public async void LoadProjects(object sender, EventArgs e)
+        public async void LoadWorkAssignments(object sender, EventArgs e)
         {
             try
             {
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri("http://pointcol-timesheetmobile.azurewebsites.net");
                 string json = await client.GetStringAsync("/api/workassignment");
-                string[] employees = JsonConvert.DeserializeObject<string[]>(json);
+                string[] assignments = JsonConvert.DeserializeObject<string[]>(json);
 
-                projectList.ItemsSource = employees;
+                assignmentList.ItemsSource = assignments;
             }
             catch (Exception ex)
             {
                 string errorMessage = ex.GetType().Name + ": " + ex.Message;
-                projectList.ItemsSource = new string[] { errorMessage };
+                assignmentList.ItemsSource = new string[] { errorMessage };
             }
         }
     }
