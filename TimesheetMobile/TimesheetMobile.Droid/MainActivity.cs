@@ -28,12 +28,14 @@ namespace TimesheetMobile.Droid
             // käynnistetään GPS-paikannus
             try
             {
-                LocationManager = GetSystemService("location") as LocationManager;
+                LocationManager = GetSystemService(
+                    "location") as LocationManager;
                 string Provider = LocationManager.GpsProvider;
 
                 if (LocationManager.IsProviderEnabled(Provider))
                 {
-                    LocationManager.RequestLocationUpdates(Provider, 2000, 1, this);
+                    LocationManager.RequestLocationUpdates(
+                        Provider, 2000, 1, this);
                 }
             }
             catch (Exception ex)
