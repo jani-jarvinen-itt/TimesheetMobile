@@ -8,7 +8,13 @@
     <ListView x:Name="assignmentList">
 
     </ListView>
-    
+
+    <StackLayout Orientation="Horizontal">
+      <Label Text="Latitude: "></Label>
+      <Label x:Name="latitudeLabel" Text="0.00"></Label>
+      <Label Text="Longitude:"></Label>
+      <Label x:Name="longitudeLabel" Text="0.00"></Label>
+    </StackLayout>
     <StackLayout Orientation="Horizontal">
       <Button Text="Start Work" Clicked="StartWork"></Button>
       <Button Text="Stop Work" Clicked="StopWork"></Button>

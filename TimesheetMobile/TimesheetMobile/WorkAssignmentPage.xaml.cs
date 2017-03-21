@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Android.Locations;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace TimesheetMobile
             InitializeComponent();
 
             assignmentList.ItemsSource = new string[] { "" };
+
+            latitudeLabel.Text = GpsLocationModel.Latitude.ToString("0.000");
+            longitudeLabel.Text = GpsLocationModel.Longitude.ToString("0.000");
         }
 
         public async void LoadWorkAssignments(object sender, EventArgs e)
