@@ -75,5 +75,15 @@ namespace TimesheetMobile
                 Navigation.PushAsync(new WorkAssignmentPage());
             }
         }
+
+        private async void TakeEmployeePicture(object sender, EventArgs e)
+        {
+            string employee = employeeList.SelectedItem?.ToString();
+            if (!string.IsNullOrEmpty(employee))
+            {
+                ICamera camera = DependencyService.Get<ICamera>();
+                camera.TakePicture(employee);
+            }
+        }
     }
 }
