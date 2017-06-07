@@ -39,6 +39,7 @@
     <Compile Include="EmployeePage.xaml.cs">
       <DependentUpon>EmployeePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ICamera.cs" />
     <Compile Include="Models\GpsLocationModel.cs" />
     <Compile Include="Models\WorkAssignmentOperationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

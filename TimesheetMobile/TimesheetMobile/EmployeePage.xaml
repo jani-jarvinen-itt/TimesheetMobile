@@ -9,6 +9,7 @@
     </ListView>
     <Image x:Name="employeeImage" />
     <Button Text="List Work Assignments" Clicked="ListWorkAssignments"></Button>
+    <Button Text="Take Employee Picture" Clicked="TakeEmployeePicture"></Button>
   </StackLayout>
   
 </ContentPage>
