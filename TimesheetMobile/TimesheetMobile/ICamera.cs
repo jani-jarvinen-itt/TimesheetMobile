@@ -9,5 +9,7 @@ namespace TimesheetMobile
     public interface ICamera
     {
         void TakePicture(string employeeName);
+
+        Action PictureTaken { get; set; }
     }
 }

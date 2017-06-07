@@ -17,9 +17,24 @@ namespace TimesheetMobile.Droid
 {
     public class Camera : TimesheetMobile.ICamera
     {
+        private Action pictureTaken;
+
+        public Action PictureTaken
+        {
+            get
+            {
+                return pictureTaken;
+            }
+
+            set
+            {
+                pictureTaken = value;
+            }
+        }
+
         public void TakePicture(string employeeName)
         {
-            MainActivity.AndroidMainActivity.TakeAPicture(null, null);
+            MainActivity.AndroidMainActivity.TakeAPicture(PictureTaken);
         }
     }
 }

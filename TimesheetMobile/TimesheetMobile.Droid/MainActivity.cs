@@ -28,6 +28,9 @@ namespace TimesheetMobile.Droid
         public static Android.Locations.LocationManager LocationManager;
         public static MainActivity AndroidMainActivity;
 
+        // kuvan ottamisen jälkeen suoritettava metodi eli Action
+        private Action pictureTaken;
+
         #region Paikkatieto
         protected override void OnCreate(Bundle bundle)
         {
@@ -93,40 +96,46 @@ namespace TimesheetMobile.Droid
         {
             base.OnActivityResult(requestCode, resultCode, data);
 
-            // Make it available in the gallery
-            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
-            Android.Net.Uri contentUri = Android.Net.Uri.FromFile(ImageInfo._file);
-            mediaScanIntent.SetData(contentUri);
-            SendBroadcast(mediaScanIntent);
-
-            // Display in ImageView. We will resize the bitmap to fit the display
-            // Loading the full sized image will consume to much memory 
-            // and cause the application to crash.
-
-            int height = Resources.DisplayMetrics.HeightPixels;
-            int width = _imageView.Height;
-            ImageInfo.bitmap = ImageInfo._file.Path.LoadAndResizeBitmap(width, height);
-            if (ImageInfo.bitmap != null)
+            // varmistetaan, että kyse on kuvan ottamisesta (requestCode) ja että kuvanotto onnistui (resultCode)
+            if ((requestCode == 0) && (resultCode == Android.App.Result.Ok))
             {
-                _imageView.SetImageBitmap(ImageInfo.bitmap);
-                ImageInfo.bitmap = null;
-            }
-            /*
-            var url = "http://heinoar.azurewebsites.net/WebApi/UploadImage";
-            
-            WebClient myWebClient = new WebClient();
-            try
-            {
-                myWebClient.UploadFile(url, App._file.ToString());
-            }
-            catch (Exception e)
-            {
-                Toast.MakeText(this, e.Message, ToastLength.Long).Show();
-            }
-            */
+                // Make it available in the gallery
+                Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+                Android.Net.Uri contentUri = Android.Net.Uri.FromFile(ImageInfo._file);
+                mediaScanIntent.SetData(contentUri);
+                SendBroadcast(mediaScanIntent);
 
-            // Dispose of the Java side bitmap.
-            GC.Collect();
+                // kutsutaan tapahtumankäsittelijää, jos sellainen on määritelty
+                pictureTaken?.Invoke();
+
+                // Display in ImageView. We will resize the bitmap to fit the display
+                // Loading the full sized image will consume to much memory 
+                // and cause the application to crash.
+                int height = Resources.DisplayMetrics.HeightPixels;
+                int width = _imageView.Height;
+                ImageInfo.bitmap = ImageInfo._file.Path.LoadAndResizeBitmap(width, height);
+                if (ImageInfo.bitmap != null)
+                {
+                    _imageView.SetImageBitmap(ImageInfo.bitmap);
+                    ImageInfo.bitmap = null;
+                }
+                /*
+                var url = "http://heinoar.azurewebsites.net/WebApi/UploadImage";
+
+                WebClient myWebClient = new WebClient();
+                try
+                {
+                    myWebClient.UploadFile(url, App._file.ToString());
+                }
+                catch (Exception e)
+                {
+                    Toast.MakeText(this, e.Message, ToastLength.Long).Show();
+                }
+                */
+
+                // Dispose of the Java side bitmap.
+                GC.Collect();
+            }
         }
 
         //Luodaan hakemisto kuville. Tätä kutsutaan OnCreate kohdassa
@@ -151,7 +160,7 @@ namespace TimesheetMobile.Droid
         }
 
         //Kutsutaan kun nappia painetaan
-        public void TakeAPicture(object sender, EventArgs eventArgs)
+        public void TakeAPicture(Action pictureTaken)
         {
             //Intent tyyppiä käytetään käynnistämään androidissa muita sovelluksia
             Intent intent = new Intent(MediaStore.ActionImageCapture);
@@ -160,6 +169,10 @@ namespace TimesheetMobile.Droid
             //kerrotaan intentille mihin tiedostoon kuva tallennetaan
             intent.PutExtra(MediaStore.ExtraOutput,
                 Android.Net.Uri.FromFile(ImageInfo._file));
+
+            // tallennetaan annettu tapahtuma/action
+            this.pictureTaken = pictureTaken;
+
             //käynnistetään määritelty intent
             StartActivityForResult(intent, 0);
         }

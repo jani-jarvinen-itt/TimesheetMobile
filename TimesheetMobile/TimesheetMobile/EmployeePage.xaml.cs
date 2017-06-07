@@ -82,8 +82,16 @@ namespace TimesheetMobile
             if (!string.IsNullOrEmpty(employee))
             {
                 ICamera camera = DependencyService.Get<ICamera>();
+
+                camera.PictureTaken = PictureTakenSuccessfully;
                 camera.TakePicture(employee);
             }
+        }
+
+        private void PictureTakenSuccessfully()
+        {
+            // TODO: päivitetään ruudulla näkyvä kuva
+            takePictureButton.Text = "Picture Taken!";
         }
     }
 }
